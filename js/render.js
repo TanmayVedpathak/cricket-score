@@ -1,4 +1,4 @@
-function renderScore(team,score) {
+function renderScore(team, score) {
     const element = document.querySelector(`[data-runs='${team}']`);
     element.innerText = score;
 }
@@ -13,9 +13,36 @@ function renderOver(team, over) {
     element.innerText = over;
 }
 
-function renderCurrentScore(overComplete, value) {
+function renderLastBall(overComplete, value) {
+    let className = ""
     if (overComplete) {
-        overWrapper.innerHTML = ""
+        setTimeout(() => {
+            overWrapper.innerHTML = ""
+        }, 1000)
     }
-    overWrapper.innerHTML += `<div class="currentBall">${value}</div>`
+
+    switch (value) {
+        case "0":
+            className = "dot";
+            break;
+        case "WD":
+            className = "wide";
+            break;
+        case "W":
+            className = "wicket";
+            break;
+        case "N":
+            className = "no-ball";
+            break;
+        case "6":
+            className = "six";
+            break;
+        case "4":
+            className = "four";
+            break;
+        default:
+            break;
+    }
+
+    overWrapper.innerHTML += `<div class="currentBall ${className}">${value}</div>`
 }

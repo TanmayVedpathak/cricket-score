@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cricket</title>
     <link rel="stylesheet" href="./css/style.css">
 </head>
+
 <body>
     <h1 class="heading">Cricket Match</h1>
 
@@ -36,60 +38,69 @@
 
     <div class="controls">
         <div class="control__wrapper">
+            <div id="target__text" class="target__text"></div>
+
             <div id="over__wrapper" class="over__wrapper"></div>
 
             <div class="buttons__wrapper">
                 <div class="input__group">
-                    <input class="checkbox" type="checkbox" id="1">
+                    <input class="checkbox" type="checkbox" id="1" />
                     <label for="1" class="button" data-run="1">1</label>
                 </div>
                 <div class="input__group">
-                    <input class="checkbox" type="checkbox" id="2">
+                    <input class="checkbox" type="checkbox" id="2" />
                     <label for="2" class="button" data-run="2">2</label>
                 </div>
                 <div class="input__group">
-                    <input class="checkbox" type="checkbox" id="3">
+                    <input class="checkbox" type="checkbox" id="3" />
                     <label for="3" class="button" data-run="3">3</label>
                 </div>
                 <div class="input__group">
-                    <input class="checkbox" type="checkbox" id="4">
+                    <input class="checkbox" type="checkbox" id="4" />
                     <label for="4" class="button" data-run="4">4</label>
                 </div>
                 <div class="input__group">
-                    <input class="checkbox" type="checkbox" id="5">
+                    <input class="checkbox" type="checkbox" id="5" />
                     <label for="5" class="button" data-run="5">5</label>
                 </div>
                 <div class="input__group">
-                    <input class="checkbox" type="checkbox" id="6">
+                    <input class="checkbox" type="checkbox" id="6" />
                     <label for="6" class="button" data-run="6">6</label>
                 </div>
                 <div class="input__group">
-                    <input class="checkbox" type="checkbox" id="0">
+                    <input class="checkbox" type="checkbox" id="0" />
                     <label for="0" class="button" data-run="0">Dot Ball</label>
                 </div>
                 <div class="input__group">
-                    <input class="checkbox" type="checkbox" id="W">
+                    <input class="checkbox" type="checkbox" id="W" />
                     <label for="W" class="button" data-run="W">Wicket</label>
                 </div>
                 <div class="input__group">
-                    <input class="checkbox" type="checkbox" id="WD">
+                    <input class="checkbox" type="checkbox" id="WD" />
                     <label for="WD" class="button" data-run="WD">Wide Ball</label>
                 </div>
                 <div class="input__group">
-                    <input class="checkbox" type="checkbox" id="N">
+                    <input class="checkbox" type="checkbox" id="N" />
                     <label for="N" class="button" data-run="N">No ball</label>
                 </div>
+            </div>
+
+            <div>
+                <button type="button" id="submitBtn" class="submitBtn">Submit</button>
             </div>
         </div>
     </div>
 
-    <!-- <div class="modal">
-        <p class="modal__text">Player 2 won</p>
-        <button type="button" class="modal__button">Restart</button>        
-    </div> -->
+    <div id="modal__section" class="modal__section">
+        <div class="modal">
+            <p id="modal__text" class="modal__text"></p>
+            <button type="button" id="submit__button" class="modal__button">Restart</button>
+        </div>
+    </div>
 
     <script src="./js/script.js"></script>
     <script src="./js/render.js"></script>
     <script src="./js/biz.js"></script>
 </body>
+
 </html>
