@@ -3,19 +3,19 @@ const overWrapper = document.getElementById("over__wrapper");
 const modalSection = document.getElementById("modal__section");
 const modalText = document.getElementById("modal__text");
 const targetText = document.getElementById("target__text");
-const totalOver = 4;
+const totalOver = 2;
 const totalWicket = 10;
 const checkboxValidation = {
-    "0": ["1", "2", "3", "4", "5", "6", "N", "W", "WD"],
-    "1": ["0"],
-    "2": ["0"],
-    "3": ["0"],
-    "4": ["0"],
-    "5": ["0"],
-    "6": ["0"],
-    "N": ["0", "W"],
-    "W": ["0", "N"],
-    "WD": ["0"],
+    "0" : ["1", "2", "3", "4", "5", "6", "N", "W", "WD"],
+    "1" : ["0"],
+    "2" : ["0"],
+    "3" : ["0"],
+    "4" : ["0"],
+    "5" : ["0"],
+    "6" : ["0"],
+    "N" : ["0", "W"],
+    "W" : ["0", "N"],
+    "WD" : ["0"],
 }
 var targetScore = 0;
 var teamPlaying = "1";
@@ -36,9 +36,9 @@ var detailObj = {
 };
 
 function bodyColorManipulation(team) {
-    if (team == 1) {
+    if(team == 1) {
         document.querySelector("body").style.backgroundColor = "lightblue"
-    } else if (team == 2) {
+    } else if(team == 2) {
         document.querySelector("body").style.backgroundColor = "lightyellow"
     } else {
         document.querySelector("body").style.backgroundColor = "white"
@@ -63,13 +63,13 @@ function scoreManipulation(team, value) {
         });
         detailObj[team]["score"] += singleBallRun;
     }
-    renderScore(team, detailObj[team]["score"]);
+    renderScore();
 }
 
 function wicketManipulation(team, value) {
     if (/(\bW\b)/.test(value)) {
         detailObj[team]["wicket"] += 1;
-        renderWicket(team, detailObj[team]["wicket"])
+        renderWicket()
     }
 }
 
@@ -80,8 +80,8 @@ function overManipulation(team, value) {
         if ((detailObj[team]["over"] % 1).toFixed(1) == 0.6) {
             detailObj[team]["over"] += 0.4
         }
-    }
-    renderOver(team, detailObj[team]["over"]);
+    }            
+    renderOver();
 }
 
 function lastBallManipulation(team, value) {
@@ -93,16 +93,14 @@ function lastBallManipulation(team, value) {
 }
 
 function checkboxManipulation() {
-    checkboxes.forEach(checkbox => {
-        {
-            checkbox.checked = false;
-        }
-    })
+    checkboxes.forEach(checkbox => {{
+        checkbox.checked = false;
+    }})
 }
 
 function disableCheckbox(checkboxValue) {
     checkboxes.forEach(checkbox => {
-        if (checkboxValidation[checkboxValue].includes(checkbox.getAttribute("id"))) {
+        if(checkboxValidation[checkboxValue].includes(checkbox.getAttribute("id"))) {
             checkbox.disabled = true;
         }
     })
@@ -112,33 +110,45 @@ function enableCheckbox() {
     let validationArray = new Set();
     if (singleBallText) {
         singleBallText.split("+").forEach(singleRun => {
-            if (singleRun) {
-                checkboxValidation[singleRun].forEach(validValue => validationArray.add(validValue));
+            if(singleRun) {
+                checkboxValidation[singleRun].forEach(validValue => validationArray.add(validValue)); 
             }
         });
     }
     checkboxes.forEach(checkbox => {
-        if ([...validationArray].length === 0) {
+        if([...validationArray].length === 0) {
             checkbox.disabled = false;
-        } else if (![...validationArray].includes(checkbox.getAttribute("id"))) {
+        } else if(![...validationArray].includes(checkbox.getAttribute("id"))) {
             checkbox.disabled = false;
-        }
+        } 
     })
 }
 
-// function enableCheckbox() {
-//     let validationArray = [];
-//     if(singleBallText) {
-//         singleBallText.split("+").forEach(singleRun => {
-//             validationArray.push(...checkboxValidation[singleRun])
-//         })
-//     }
-//     console.log("validationArray", validationArray)
-//     checkboxes.forEach(checkbox => {
-//         if(!validationArray) {
-//             checkbox.disabled = false;
-//         } else if(validationArray.includes(checkbox.getAttribute("id"))) {
-//             checkbox.disabled = false;
-//         }
-//     })
-// }
+function returnClass(value) {
+    let className = "";
+
+    switch (value) {
+        case "0":
+            className = "dot";
+            break;
+        case "WD":
+            className = "wide";
+            break;
+        case "W":
+            className = "wicket";
+            break;
+        case "N":
+            className = "no-ball";
+            break;
+        case "6":
+            className = "six";
+            break;
+        case "4":
+            className = "four";
+            break;
+        default:
+            break;
+    }
+
+    return className;
+}

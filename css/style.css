@@ -6,8 +6,9 @@
 }
 
 body {
-    overflow: hidden;
     background: rgba(255, 255, 255, 0.85);
+    overflow: hidden;
+    zoom: 90%;
 }
 
 .heading {
@@ -40,8 +41,11 @@ body {
 
 .team {
     grid-area: team;
+}
+
+.team h2 {
     color: white;
-    font-size: 25px;
+    font-size: 30px;
     font-weight: 600;
 }
 
@@ -176,7 +180,59 @@ body {
     font-size: 18px;
     border-radius: 10px;
     background-color: yellow;
+    box-shadow: 1px 1px 5px 1px #474747;
+    transition: all 0.3s linear;
     cursor: pointer;
+}
+
+.submitBtn:hover {
+    background-color: rgb(202, 202, 19);
+}
+
+.records {
+    position: absolute;
+    top: 105px;
+    max-width: 300px;
+    width: 100%;
+    background-color: aqua;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.record {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.records-1 {
+    left: 20px;
+}
+
+.records-2 {
+    right: 20px;
+}
+
+.currentRecord {
+    background-color: rgb(233, 246, 116);
+    width: 100%;
+    border-radius: 20px;
+    border: 1px solid rgb(227, 187, 187);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    gap: 10px;
+    padding: 15px;
+}
+
+.currentRecord .currentBall {
+    min-width: 20px;
+    height: 20px;
+    font-size: 12px;
 }
 
 .modal__section {

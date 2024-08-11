@@ -1,20 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cricket</title>
     <link rel="stylesheet" href="./css/style.css">
 </head>
-
 <body>
     <h1 class="heading">Cricket Match</h1>
 
     <div class="details">
         <div class="detail">
             <div class="team">
-                Team 1
+                <h2>Team 1</h2>
             </div>
             <div class="score">
                 <span data-runs="1">0</span>/<span data-wickets="1">0</span>
@@ -25,7 +23,7 @@
         </div>
         <div class="detail">
             <div class="team">
-                Team 2
+                <h2>Team 2</h2>
             </div>
             <div class="score">
                 <span data-runs="2">0</span>/<span data-wickets="2">0</span>
@@ -39,7 +37,7 @@
     <div class="controls">
         <div class="control__wrapper">
             <div id="target__text" class="target__text"></div>
-
+            
             <div id="over__wrapper" class="over__wrapper"></div>
 
             <div class="buttons__wrapper">
@@ -91,6 +89,18 @@
         </div>
     </div>
 
+    <div class="records records-1">
+        <h3>Team 1</h3>
+
+        <div class="record record-1"></div>
+    </div>
+
+    <div class="records records-2">
+        <h3>Team 2</h3>
+
+        <div class="record record-2"></div>
+    </div>
+
     <div id="modal__section" class="modal__section">
         <div class="modal">
             <p id="modal__text" class="modal__text"></p>
@@ -102,5 +112,4 @@
     <script src="./js/render.js"></script>
     <script src="./js/biz.js"></script>
 </body>
-
 </html>

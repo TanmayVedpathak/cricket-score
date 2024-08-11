@@ -1,48 +1,39 @@
-function renderScore(team, score) {
-    const element = document.querySelector(`[data-runs='${team}']`);
-    element.innerText = score;
+function renderScore() {
+    const element = document.querySelector(`[data-runs='${teamPlaying}']`);
+    element.innerText = detailObj[teamPlaying]["score"];
 }
 
-function renderWicket(team, wicket) {
-    const element = document.querySelector(`[data-wickets='${team}']`);
-    element.innerText = wicket;
+function renderWicket() {
+    const element = document.querySelector(`[data-wickets='${teamPlaying}']`);
+    element.innerText = detailObj[teamPlaying]["wicket"];
 }
 
-function renderOver(team, over) {
-    const element = document.querySelector(`[data-overs='${team}']`);
-    element.innerText = over;
+function renderOver() {
+    const element = document.querySelector(`[data-overs='${teamPlaying}']`);
+    element.innerText = detailObj[teamPlaying]["over"];
 }
 
 function renderLastBall(overComplete, value) {
-    let className = ""
+    const className = returnClass(value);
     if (overComplete) {
         setTimeout(() => {
             overWrapper.innerHTML = ""
         }, 1000)
     }
 
-    switch (value) {
-        case "0":
-            className = "dot";
-            break;
-        case "WD":
-            className = "wide";
-            break;
-        case "W":
-            className = "wicket";
-            break;
-        case "N":
-            className = "no-ball";
-            break;
-        case "6":
-            className = "six";
-            break;
-        case "4":
-            className = "four";
-            break;
-        default:
-            break;
+    overWrapper.innerHTML += `<div class="currentBall ${className}">${value}</div>`;
+}
+
+function insertInRecord(team, value) {
+    const record = document.querySelector(`.record-${team}`);
+    const currentOver = Math.floor(detailObj[team].over / 1);
+    const className = returnClass(value);
+    
+    if(!record.querySelector(`.currentRecord-${currentOver}`)) {
+        record.innerHTML += `<div class="currentRecord currentRecord-${currentOver}"></div>`;
     }
 
-    overWrapper.innerHTML += `<div class="currentBall ${className}">${value}</div>`
+    const currentRecord = document.querySelector(`.record-${team} .currentRecord-${currentOver}`);
+
+    currentRecord.innerHTML += `<div class="currentBall ${className}">${value}</div>`;
 }
