@@ -6,16 +6,16 @@ const targetText = document.getElementById("target__text");
 const totalOver = 2;
 const totalWicket = 10;
 const checkboxValidation = {
-    "0" : ["1", "2", "3", "4", "5", "6", "N", "W", "WD"],
-    "1" : ["0"],
-    "2" : ["0"],
-    "3" : ["0"],
-    "4" : ["0"],
-    "5" : ["0"],
-    "6" : ["0"],
-    "N" : ["0", "W"],
-    "W" : ["0", "N"],
-    "WD" : ["0"],
+    "0": ["1", "2", "3", "4", "5", "6", "N", "W", "WD"],
+    "1": ["0"],
+    "2": ["0"],
+    "3": ["0"],
+    "4": ["0"],
+    "5": ["0"],
+    "6": ["0"],
+    "N": ["0", "W"],
+    "W": ["0", "N"],
+    "WD": ["0"],
 }
 var targetScore = 0;
 var teamPlaying = "1";
@@ -26,28 +26,31 @@ var detailObj = {
         wicket: 0,
         over: 0.0,
         balls: 6 * totalOver,
+        record: {},
     },
     2: {
         score: 0,
         wicket: 0,
         over: 0.0,
         balls: 6 * totalOver,
+        record: {},
     }
 };
+var recentOver = [];
 
-function bodyColorManipulation(team) {
-    if(team == 1) {
+function bodyColorManipulation() {
+    if (teamPlaying == 1) {
         document.querySelector("body").style.backgroundColor = "lightblue"
-    } else if(team == 2) {
+    } else if (teamPlaying == 2) {
         document.querySelector("body").style.backgroundColor = "lightyellow"
     } else {
         document.querySelector("body").style.backgroundColor = "white"
     }
 }
 
-function scoreManipulation(team, value) {
+function scoreManipulation(value) {
     if (value.includes("0")) {
-        detailObj[team]["score"] += 0;
+        detailObj[teamPlaying]["score"] += 0;
     } else {
         let singleBallRun = 0;
         let runsArray = value.split("+");
@@ -61,31 +64,33 @@ function scoreManipulation(team, value) {
                 singleBallRun += run;
             }
         });
-        detailObj[team]["score"] += singleBallRun;
+        detailObj[teamPlaying]["score"] += singleBallRun;
     }
     renderScore();
 }
 
-function wicketManipulation(team, value) {
+function wicketManipulation(value) {
     if (/(\bW\b)/.test(value)) {
-        detailObj[team]["wicket"] += 1;
+        detailObj[teamPlaying]["wicket"] += 1;
         renderWicket()
     }
 }
 
-function overManipulation(team, value) {
+function overManipulation(value) {
     if (!value.includes("WD") && !value.includes("N")) {
-        detailObj[team]["balls"] -= 1
-        detailObj[team]["over"] = Number((detailObj[team]["over"] + 0.1).toFixed(1));
-        if ((detailObj[team]["over"] % 1).toFixed(1) == 0.6) {
-            detailObj[team]["over"] += 0.4
+        detailObj[teamPlaying]["balls"] -= 1
+        detailObj[teamPlaying]["over"] = Number((detailObj[teamPlaying]["over"] + 0.1).toFixed(1));
+        if ((detailObj[teamPlaying]["over"] % 1).toFixed(1) == 0.6) {
+            detailObj[teamPlaying]["over"] += 0.4
         }
-    }            
+    }
     renderOver();
 }
 
-function lastBallManipulation(team, value) {
-    if (detailObj[team]["over"] % 1 == 0 && detailObj[team]["over"] !== 0) {
+function lastBallManipulation(value) {
+    recentOver.push(value);
+    localStorage.setItem("recentOver", JSON.stringify(recentOver));
+    if (detailObj[teamPlaying]["over"] % 1 == 0 && detailObj[teamPlaying]["over"] !== 0) {
         renderLastBall(true, value)
     } else {
         renderLastBall(false, value)
@@ -93,14 +98,16 @@ function lastBallManipulation(team, value) {
 }
 
 function checkboxManipulation() {
-    checkboxes.forEach(checkbox => {{
-        checkbox.checked = false;
-    }})
+    checkboxes.forEach(checkbox => {
+        {
+            checkbox.checked = false;
+        }
+    })
 }
 
 function disableCheckbox(checkboxValue) {
     checkboxes.forEach(checkbox => {
-        if(checkboxValidation[checkboxValue].includes(checkbox.getAttribute("id"))) {
+        if (checkboxValidation[checkboxValue].includes(checkbox.getAttribute("id"))) {
             checkbox.disabled = true;
         }
     })
@@ -110,17 +117,17 @@ function enableCheckbox() {
     let validationArray = new Set();
     if (singleBallText) {
         singleBallText.split("+").forEach(singleRun => {
-            if(singleRun) {
-                checkboxValidation[singleRun].forEach(validValue => validationArray.add(validValue)); 
+            if (singleRun) {
+                checkboxValidation[singleRun].forEach(validValue => validationArray.add(validValue));
             }
         });
     }
     checkboxes.forEach(checkbox => {
-        if([...validationArray].length === 0) {
+        if ([...validationArray].length === 0) {
             checkbox.disabled = false;
-        } else if(![...validationArray].includes(checkbox.getAttribute("id"))) {
+        } else if (![...validationArray].includes(checkbox.getAttribute("id"))) {
             checkbox.disabled = false;
-        } 
+        }
     })
 }
 
@@ -151,4 +158,11 @@ function returnClass(value) {
     }
 
     return className;
+}
+
+function emptyLocalStorage() {
+    localStorage.removeItem("detailObj");
+    localStorage.removeItem("teamPlaying");
+    localStorage.removeItem("recentOver");
+    localStorage.removeItem("targetScore");
 }

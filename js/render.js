@@ -1,22 +1,24 @@
-function renderScore() {
-    const element = document.querySelector(`[data-runs='${teamPlaying}']`);
-    element.innerText = detailObj[teamPlaying]["score"];
+function renderScore(team) {
+    const element = document.querySelector(`[data-runs='${team || teamPlaying}']`);
+    element.innerText = detailObj[team || teamPlaying]["score"];
 }
 
-function renderWicket() {
-    const element = document.querySelector(`[data-wickets='${teamPlaying}']`);
-    element.innerText = detailObj[teamPlaying]["wicket"];
+function renderWicket(team) {
+    const element = document.querySelector(`[data-wickets='${team || teamPlaying}']`);
+    element.innerText = detailObj[team || teamPlaying]["wicket"];
 }
 
-function renderOver() {
-    const element = document.querySelector(`[data-overs='${teamPlaying}']`);
-    element.innerText = detailObj[teamPlaying]["over"];
+function renderOver(team) {
+    const element = document.querySelector(`[data-overs='${team || teamPlaying}']`);
+    element.innerText = detailObj[team || teamPlaying]["over"];
 }
 
 function renderLastBall(overComplete, value) {
     const className = returnClass(value);
     if (overComplete) {
         setTimeout(() => {
+            recentOver = [];
+            localStorage.setItem("recentOver", recentOver);
             overWrapper.innerHTML = ""
         }, 1000)
     }
@@ -24,16 +26,38 @@ function renderLastBall(overComplete, value) {
     overWrapper.innerHTML += `<div class="currentBall ${className}">${value}</div>`;
 }
 
-function insertInRecord(team, value) {
-    const record = document.querySelector(`.record-${team}`);
-    const currentOver = Math.floor(detailObj[team].over / 1);
+function insertInRecord(value) {
+    const record = document.querySelector(`.record-${teamPlaying}`);
+    const currentOver = Math.floor(detailObj[teamPlaying].over / 1);
     const className = returnClass(value);
-    
-    if(!record.querySelector(`.currentRecord-${currentOver}`)) {
+
+    if (detailObj[teamPlaying].record.hasOwnProperty(currentOver)) {
+        detailObj[teamPlaying].record[currentOver].push(value)
+    } else {
+        detailObj[teamPlaying].record[currentOver] = [...value];
+    }
+
+    if (!record.querySelector(`.currentRecord-${currentOver}`)) {
         record.innerHTML += `<div class="currentRecord currentRecord-${currentOver}"></div>`;
     }
 
-    const currentRecord = document.querySelector(`.record-${team} .currentRecord-${currentOver}`);
+    const currentRecord = document.querySelector(`.record-${teamPlaying} .currentRecord-${currentOver}`);
 
     currentRecord.innerHTML += `<div class="currentBall ${className}">${value}</div>`;
+}
+
+function renderRecords(obj, team) {
+    if (Object.keys(obj).length !== 0) {
+        const record = document.querySelector(`.record-${team}`);
+        for (over in obj) {
+            if (!record.querySelector(`.currentRecord-${over}`)) {
+                record.innerHTML += `<div class="currentRecord currentRecord-${over}"></div>`;
+            }
+            const currentRecord = document.querySelector(`.record-${team} .currentRecord-${over}`);
+            obj[over].forEach(run => {
+                const className = returnClass(run);
+                currentRecord.innerHTML += `<div class="currentBall ${className}">${run}</div>`;
+            });
+        }
+    }
 }

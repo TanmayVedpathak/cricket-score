@@ -15,55 +15,110 @@ checkboxes.forEach(element => {
         } else {
             singleBallText = singleBallText.replace(value, "");
             singleBallText = singleBallText.replace("++", "+");
+            singleBallText = singleBallText.replace(/^\+|\+$/g, '');
             enableCheckbox(value)
         }
     })
 });
 
-modalButton.addEventListener("click", function() {
+modalButton.addEventListener("click", function () {
+    emptyLocalStorage();
     window.location.reload();
 })
 
-submitButton.addEventListener("click", function() {
-    if (teamPlaying == 1) {
-        bodyColorManipulation(1)
-        scoreManipulation(1, singleBallText);
-        wicketManipulation(1, singleBallText);
-        insertInRecord(1, singleBallText);
-        overManipulation(1, singleBallText);
-        lastBallManipulation(1, singleBallText)
+submitButton.addEventListener("click", function () {
+    if (singleBallText == "") {
+        return;
+    }
+    scoreManipulation(singleBallText);
+    wicketManipulation(singleBallText);
+    insertInRecord(singleBallText);
+    overManipulation(singleBallText);
+    lastBallManipulation(singleBallText);
+    bodyColorManipulation();
 
-        if(detailObj["1"]["over"] === totalOver || detailObj["1"]["wicket"] === totalWicket) {
+    if (teamPlaying == 1) {
+        if (detailObj["1"]["over"] === totalOver || detailObj["1"]["wicket"] === totalWicket) {
             teamPlaying = 2;
             targetScore = detailObj["1"]["score"] + 1;
-            bodyColorManipulation(2);
+            localStorage.setItem("targetScore", targetScore); s
             targetText.innerText = `Need ${targetScore - detailObj[2].score} runs in ${detailObj[2].balls} balls`;
         }
     } else if (teamPlaying == 2) {
-        scoreManipulation(2, singleBallText);
-        wicketManipulation(2, singleBallText);
-        insertInRecord(2, singleBallText);
-        overManipulation(2, singleBallText);
-        lastBallManipulation(2, singleBallText)
-
-        if(detailObj["2"]["score"] >= targetScore) {
+        if (detailObj["2"]["score"] >= targetScore) {
             teamPlaying = 3
             modalSection.style.display = "flex";
-            modalText.innerText = `Team 2 won by ${totalWicket - detailObj["2"]["wicket"]} wickets`
-        } else if(detailObj["2"]["over"] === totalOver || detailObj["2"]["wicket"] === totalWicket) {
+            modalText.innerText = `Team 2 won by ${totalWicket - detailObj["2"]["wicket"]} wickets`;
+        } else if (detailObj["2"]["over"] === totalOver || detailObj["2"]["wicket"] === totalWicket) {
             teamPlaying = 3
-            if(detailObj["2"]["score"] < detailObj["1"]["score"]) {
+            if (detailObj["2"]["score"] < detailObj["1"]["score"]) {
                 modalSection.style.display = "flex";
-                modalText.innerText = `Team 1 won by ${targetScore - detailObj["2"]["score"] - 1} runs`
+                modalText.innerText = `Team 1 won by ${targetScore - detailObj["2"]["score"] - 1} runs`;
             } else if (detailObj["2"]["score"] === detailObj["1"]["score"]) {
                 modalSection.style.display = "flex";
-                modalText.innerText = "Tie"
+                modalText.innerText = "Tie";
             }
         }
-
         targetText.innerText = `Need ${targetScore - detailObj[2].score} runs in ${detailObj[2].balls} balls`;
     }
+    localStorage.setItem("detailObj", JSON.stringify(detailObj));
+    localStorage.setItem("teamPlaying", teamPlaying);
     checkboxManipulation();
     singleBallText = "";
     enableCheckbox();
+    if (teamPlaying == 3) {
+        emptyLocalStorage();
+    }
+});
+
+window.addEventListener("keypress", function (event) {
+    if (event.key == 'Enter') {
+        submitButton.dispatchEvent(new Event("click"));
+    }
 })
+
+window.onload = function () {
+    const obj = localStorage.getItem("detailObj");
+    const currentTeamPlaying = localStorage.getItem("teamPlaying");
+    const currentOver = localStorage.getItem("recentOver");
+    const score = localStorage.getItem("targetScore");
+
+    if (score) {
+        targetScore = score;
+    }
+
+    if (currentTeamPlaying) {
+        teamPlaying = currentTeamPlaying;
+        bodyColorManipulation();
+        if (teamPlaying == "2") {
+            targetText.innerText = `Need ${targetScore - detailObj[2].score} runs in ${detailObj[2].balls} balls`;
+        }
+    }
+
+    if (obj) {
+        detailObj = JSON.parse(obj);
+        for (team in detailObj) {
+            for (key in detailObj[team]) {
+                if (key == 'score') {
+                    renderScore(team);
+                }
+                if (key == 'wicket') {
+                    renderWicket(team);
+                }
+                if (key == 'over') {
+                    renderOver(team);
+                }
+                if (key == 'record') {
+                    renderRecords(detailObj[team][key], team);
+                }
+            }
+        }
+    }
+
+    if (currentOver) {
+        recentOver = JSON.parse(currentOver);
+        recentOver.forEach(run => {
+            renderLastBall(false, run)
+        })
+    }
+};

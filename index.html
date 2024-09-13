@@ -1,13 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cricket</title>
     <link rel="stylesheet" href="./css/style.css">
 </head>
+
 <body>
-    <h1 class="heading">Cricket Match</h1>
+    <h1 class="heading">Score Card</h1>
+
+    <!-- <div class="startup_bg">
+        <div class="startup_form">
+            <img class="startup_cross" src="./assets/cross.svg" alt="cross" />
+            <h2 class="startup_title">Details</h2>
+            <form>
+                <div class="teams_details">
+                    <div class="team_details">
+                        <h3>Team 1</h3>
+                        <div class="form_input">
+                            <label for="">Team name :</label>
+                            <input type="text" name="" id="">
+                        </div>
+                        <div class="form_input">
+                            <label for="">Team color :</label>
+                            <input type="text" name="" id="">
+                        </div>
+                    </div>
+                    <div class="team_details">
+                        <h3>Team 2</h3>
+                        <div class="form_input">
+                            <label for="">Team name :</label>
+                            <input type="text" name="" id="">
+                        </div>
+                        <div class="form_input">
+                            <label for="">Team color :</label>
+                            <input type="text" name="" id="">
+                        </div>
+                    </div>
+                </div>
+                <div class="overs_details">
+                    <div class="form_input">
+                        <label for="">Total over :</label>
+                        <input type="number " name="" id="">
+                    </div>
+                </div>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div> -->
 
     <div class="details">
         <div class="detail">
@@ -18,7 +60,7 @@
                 <span data-runs="1">0</span>/<span data-wickets="1">0</span>
             </div>
             <div class="over">
-                <p data-overs="1">0.0</p>
+                <p data-overs="1">0</p>
             </div>
         </div>
         <div class="detail">
@@ -29,15 +71,27 @@
                 <span data-runs="2">0</span>/<span data-wickets="2">0</span>
             </div>
             <div class="over">
-                <p data-overs="2">0.0</p>
+                <p data-overs="2">0</p>
             </div>
         </div>
+    </div>
+
+    <div class="records records-1">
+        <h3>Team 1</h3>
+
+        <div class="record record-1"></div>
+    </div>
+
+    <div class="records records-2">
+        <h3>Team 2</h3>
+
+        <div class="record record-2"></div>
     </div>
 
     <div class="controls">
         <div class="control__wrapper">
             <div id="target__text" class="target__text"></div>
-            
+
             <div id="over__wrapper" class="over__wrapper"></div>
 
             <div class="buttons__wrapper">
@@ -89,18 +143,6 @@
         </div>
     </div>
 
-    <div class="records records-1">
-        <h3>Team 1</h3>
-
-        <div class="record record-1"></div>
-    </div>
-
-    <div class="records records-2">
-        <h3>Team 2</h3>
-
-        <div class="record record-2"></div>
-    </div>
-
     <div id="modal__section" class="modal__section">
         <div class="modal">
             <p id="modal__text" class="modal__text"></p>
@@ -112,4 +154,5 @@
     <script src="./js/render.js"></script>
     <script src="./js/biz.js"></script>
 </body>
+
 </html>
